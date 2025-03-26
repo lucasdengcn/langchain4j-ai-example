@@ -75,7 +75,7 @@ public class ChatController {
     }
 
     // @CrossOrigin(origins = "localhost:3000", allowCredentials = "true", allowedHeaders = "*")
-    @GetMapping(path = "/ai/generateStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostMapping(path = "/ai/generateStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter generateStream(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
         SseEmitterReference emitterReference = sseEmitterService.createEmitter("abc", emitter -> {
             proposalChatService.streamChat(message, emitter);

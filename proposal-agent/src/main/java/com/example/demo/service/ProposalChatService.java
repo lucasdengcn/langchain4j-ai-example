@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.util.*;
 
 import com.example.demo.assistant.CustomerAssistant;
+import com.example.demo.assistant.CustomerStreamAssistant;
 import com.example.demo.tool.DateTimeTools;
 import dev.langchain4j.agent.tool.ToolSpecification;
 import dev.langchain4j.agent.tool.ToolSpecifications;
@@ -33,7 +34,9 @@ public class ProposalChatService {
 
     private final OpenAiChatModel openAiChatModel;
     private final OpenAiStreamingChatModel openAiStreamingChatModel;
+    //
     private final CustomerAssistant customerAssistant;
+    private final CustomerStreamAssistant customerStreamAssistant;
     //
     private final List<ToolSpecification> toolSpecifications;
 
@@ -42,10 +45,13 @@ public class ProposalChatService {
 
     public ProposalChatService(OpenAiChatModel openAiChatModel,
                                OpenAiStreamingChatModel openAiStreamingChatModel,
-                               CustomerAssistant customerAssistant) {
+                               CustomerAssistant customerAssistant,
+                               CustomerStreamAssistant customerStreamAssistant) {
+        //
         this.openAiChatModel = openAiChatModel;
         this.openAiStreamingChatModel = openAiStreamingChatModel;
         this.customerAssistant = customerAssistant;
+        this.customerStreamAssistant = customerStreamAssistant;
         //
         this.toolSpecifications = ToolSpecifications.toolSpecificationsFrom(CustomerTools.class);
         toolSpecifications.addAll(ToolSpecifications.toolSpecificationsFrom(DateTimeTools.class));
@@ -83,6 +89,7 @@ public class ProposalChatService {
      * @param message
      * @return
      */
+    @Deprecated
     public String chatLowLevel(String message) {
         UserMessage userMessage = UserMessage.from(message);
         ChatRequest chatRequest = ChatRequest.builder()
@@ -125,7 +132,8 @@ public class ProposalChatService {
         return aiMessage.text();
     }
 
-    public void streamChat(String message, SseEmitter emitter) {
+    @Deprecated
+    public void streamChatLowLevel(String message, SseEmitter emitter) {
         ChatRequest chatRequest = ChatRequest.builder()
                 .messages(UserMessage.from(message))
                 .toolSpecifications(this.toolSpecifications)
@@ -155,6 +163,18 @@ public class ProposalChatService {
                 emitter.completeWithError(error);
             }
         });
+    }
+
+    public void streamChat(String message, SseEmitter emitter) {
+        this.customerStreamAssistant.chat(message).doOnNext(text -> {
+            try {
+                emitter.send(text);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).doOnComplete(emitter::complete)
+        .doOnError(emitter::completeWithError)
+        .subscribe();
     }
 
     public void streamAnalysis(SseEmitter emitter) {
