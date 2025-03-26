@@ -73,3 +73,5 @@ bin/
 .m3u
 .m3u8
 .pls
+/proposal-agent/src/test/test-proposal.pdf
+/proposal-agent/src/test/resources/sample.txt

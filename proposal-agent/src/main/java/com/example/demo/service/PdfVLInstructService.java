@@ -94,7 +94,7 @@ public class PdfVLInstructService {
                 return Float.compare(e2.getY(), e1.getY());
             }
         });
-        int maxTokens = 5000;
+        int maxTokens = 60000;
         StringBuilder sb = new StringBuilder(maxTokens);
         int length = 0;
         for (PdfElement element : elements) {
