@@ -2,14 +2,29 @@
 
 ## Overview
 
-The MCP Server module provides a robust implementation of the Model Context Protocol (MCP) server with support for both WebFlux and WebMvc SSE (Server-Sent Events).
+The MCP Server module provides a robust implementation of the Model Context Protocol (MCP) server, designed to work seamlessly with LangChain4j. It offers dual support for both WebFlux and WebMvc SSE (Server-Sent Events), enabling real-time communication between AI models and clients.
 
 ## Features
 
+### Core Capabilities
+
+- Model Context Protocol (MCP) server implementation
+- Integration with LangChain4j for AI model interactions
+- Real-time communication via Server-Sent Events (SSE)
 - Dual implementation support (WebFlux/WebMvc)
-- Server-Sent Events (SSE) for real-time communication
-- PostgreSQL integration with PGVector
+
+### Database Support
+
+- PostgreSQL integration with PGVector for production
 - H2 database support for development
+- Spring Data JPA for data persistence
+
+### Server Features
+
+- High-performance Undertow web server
+- Reactive programming support with WebFlux
+- Traditional Spring MVC support
+- Efficient event streaming capabilities
 
 ## Implementation Options
 
@@ -46,21 +61,11 @@ implementation 'com.h2database:h2'
 implementation 'org.springframework.boot:spring-boot-starter-undertow'
 ```
 
-## Configuration
-
-The server is configured to use:
-
-- Spring Boot with choice of WebFlux or WebMvc
-- PostgreSQL with PGVector for production
-- H2 database for development
-- Undertow as the web server
-- Spring AI MCP server integration
-
 ## Project Structure
 
 The Java source code under `src/main/java/com/example/demo` is organized into the following packages:
 
-- `common/`: Contains common utilities and configurations
+- `common/`: Common utilities and configurations
   - `CustomToolCallResultConverter.java`: Custom converter for tool call results
   - `ObjectMapperHolder.java`: Centralized JSON object mapper configuration
 

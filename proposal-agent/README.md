@@ -2,41 +2,33 @@
 
 ## Overview
 
-The Proposal Agent module implements the Model Context Protocol (MCP) client for making AI-powered proposals. It demonstrates how to integrate Spring AI with MCP client capabilities and provides advanced PDF analysis features.
+The Proposal Agent module is a sophisticated AI-powered proposal generation system that implements the Model Context Protocol (MCP) client. It seamlessly integrates Spring AI with MCP client capabilities and provides advanced PDF analysis features for comprehensive document processing.
 
 ## Features
 
-- MCP Client implementation
-- WebFlux SSE Client support
+### AI Integration
+
+- MCP Client implementation with Spring AI
 - AI-powered proposal generation
-- Real-time updates via SSE
-- PDF Analysis capabilities:
-  - Text extraction with position information
-  - Image extraction and processing
-  - Table structure detection
-  - Header and footer detection
-  - Page-to-image conversion with Base64 encoding
+- Real-time updates via Server-Sent Events (SSE)
 
-## Dependencies
+### PDF Analysis
 
-```gradle
-// MCP Client
-implementation 'org.springframework.ai:spring-ai-mcp-client-spring-boot-starter'
+- Text extraction with position information
+- Image extraction and processing
+- Table structure detection
+- Header and footer detection
+- Page-to-image conversion with Base64 encoding
 
-// WebFlux Support
-implementation 'org.springframework.boot:spring-boot-starter-webflux'
+### Real-time Communication
 
-// Web Support
-implementation 'org.springframework.boot:spring-boot-starter-web'
-implementation 'org.springframework.boot:spring-boot-starter-undertow'
-
-// Database
-implementation 'com.h2database:h2'
-```
+- WebFlux SSE Client support
+- Bi-directional data flow
+- Event-driven architecture
 
 ## Configuration
 
-The module is configured to use:
+The module leverages:
 
 - Spring Boot with WebFlux for reactive programming
 - H2 database for development
@@ -45,13 +37,13 @@ The module is configured to use:
 
 ## Project Structure
 
-The Java source code under `src/main/java/com/example/demo` is organized into the following packages:
+The source code under `src/main/java/com/example/demo` is organized into:
 
-- `chat/`: Handles chat-related functionalities and interactions
-- `common/`: Contains common utilities, configurations and shared components
-- `model/`: Data models and DTOs for the application
-- `service/`: Business logic and service implementations
-- `sse/`: Server-Sent Events (SSE) implementation for real-time updates
-- `tool/`: MCP Tool implementations for AI-powered proposal generation
+- `chat/`: Chat-related functionalities and interactions
+- `common/`: Common utilities and shared components
+- `model/`: Data models and DTOs
+- `service/`: Business logic implementations
+- `sse/`: Server-Sent Events implementation
+- `tool/`: MCP Tool implementations
 
 The main application entry point is `DemoApplication.java`
