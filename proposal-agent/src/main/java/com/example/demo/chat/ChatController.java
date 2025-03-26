@@ -49,13 +49,12 @@ public class ChatController {
         return Map.of("generation", content);
     }
 
-//    @GetMapping("/ai/weather")
-//    public Map<String,String> weather(@RequestParam(value = "city", defaultValue = "Shenzhen") String city) {
-//        String message = "What's the weather like in " + city + " China?";
-//        // String content = ChatClient.create(chatModel).prompt(message).tools(WeatherTools.CURRENT_WEATHER).call().content();
-//        String content = weatherChatClient.prompt(message).call().content();
-//        return Map.of("generation", content);
-//    }
+    @GetMapping("/ai/weather")
+    public Map<String,String> weather(@RequestParam(value = "city", defaultValue = "Shenzhen") String city) {
+        String message = "What's the weather like in " + city + " China?";
+        String content = proposalChatService.chat(message);
+        return Map.of("generation", content);
+    }
 
     @GetMapping("/ai/datetime")
     public Map<String,String> datetime(@RequestParam(value = "message", defaultValue = "What day is tomorrow?") String message) {

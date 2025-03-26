@@ -3,15 +3,24 @@ plugins {
 }
 
 dependencies {
+    implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-M6")
+//    implementation platform("io.modelcontextprotocol.sdk:mcp-bom:0.8.0")
+//    implementation "io.modelcontextprotocol.sdk:mcp"
+    //
+//    implementation "io.modelcontextprotocol.sdk:mcp-spring-webflux"
+//    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+//    implementation 'org.springframework.ai:spring-ai-mcp-server-webflux-spring-boot-starter'
+    //
+    implementation 'org.springframework.ai:spring-ai-mcp-server-spring-boot-starter'
+//    implementation "io.modelcontextprotocol.sdk:mcp-spring-webmvc"
+    implementation 'org.springframework.ai:spring-ai-mcp-server-webmvc-spring-boot-starter'
     //
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.postgresql:postgresql'
     implementation 'com.h2database:h2'
     //
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-undertow'
-    //
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'io.modelcontextprotocol.sdk:mcp-test'
 }

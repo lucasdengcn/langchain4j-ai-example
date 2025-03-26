@@ -38,18 +38,10 @@ subprojects {
     }
 
     dependencies {
-        implementation platform("dev.langchain4j:langchain4j-bom:${langchain4jVersion}")
-        implementation platform("dev.langchain4j:langchain4j-community-bom:${langchain4jVersion}")
         implementation "org.springframework.boot:spring-boot-starter-actuator"
         //
-        implementation "dev.langchain4j:langchain4j-spring-boot-starter:${langchain4jVersion}"
-        implementation "dev.langchain4j:langchain4j-reactor"
-        //
-        implementation "dev.langchain4j:langchain4j-community-dashscope"
-        implementation "dev.langchain4j:langchain4j-community-dashscope-spring-boot-starter:${langchain4jVersion}"
-        implementation "dev.langchain4j:langchain4j-open-ai-spring-boot-starter:${langchain4jVersion}"
-        //
-        implementation 'com.openai:openai-java:0.36.0'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-undertow'
         //
         compileOnly 'org.projectlombok:lombok:1.18.30'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
