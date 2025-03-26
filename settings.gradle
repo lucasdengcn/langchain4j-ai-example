@@ -1,0 +1,4 @@
+rootProject.name = 'langchain4j-ai-example'
+include 'mcp-server'
+include 'proposal-agent'
+

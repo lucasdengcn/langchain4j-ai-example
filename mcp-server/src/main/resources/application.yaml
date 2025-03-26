@@ -1,0 +1,62 @@
+logging:
+  file:
+    name: ./build/mcp-server.log
+  level:
+    org.springframework.ai: debug
+    io:
+      modelcontextprotocol:
+        server: debug
+        spec: debug
+#
+server:
+  port: 8180  # 注意此处会覆盖spring.ai.mcp.server.port
+  undertow:
+    threads:
+      io: 4       # I/O线程数 (建议设置为CPU核心数)
+      worker: 40  # 工作线程数 (默认计算公式：CPU核心数 * 8)
+    buffer-size: 1024  # 缓冲区大小(bytes)
+    direct-buffers: true  # 使用直接内存
+    http2: true
+    max-parameters: 1000    # 最大请求参数数量
+    max-headers: 200        # 最大header数量
+    max-cookies: 200        # 最大cookie数量
+    no-request-timeout: 60000  # 请求超时(ms)
+    accesslog:
+      dir: ./build/logs
+      prefix: access_log
+      suffix: log
+      pattern: '%h %l %u %t "%r" %s %b'
+#
+spring.main:
+  banner-mode: off
+#
+spring.datasource:
+  url: jdbc:h2:mem:mcp-server.db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;AUTO_RECONNECT=TRUE;MODE=PostgreSQL;
+  username: sa
+  password: password
+  driverClassName: org.h2.Driver
+#
+spring.jpa:
+  database-platform: org.hibernate.dialect.H2Dialect
+  show-sql: true
+  properties:
+    hibernate:
+      generate_statistics: true
+      jdbc:
+        batch_size: 10
+        batch_versioned_data: true
+      order_inserts: true
+      order_updates: true
+
+spring.ai:
+  mcp:
+    server:
+      enabled: true
+      stdio: false
+      name: mcp-server-weather
+      version: 1.0.0
+      type: SYNC # ASYNC or SYNC
+      sse-message-endpoint: /mcp/message
+      resource-change-notification: true
+      tool-change-notification: true
+      prompt-change-notification: true

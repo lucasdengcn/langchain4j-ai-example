@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example.demo'
+version = '1.0-SNAPSHOT'
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+ext {
+    set('langchain4jVersion', "1.0.0-beta2")
+    set('pdfboxVersion', "3.0.4")
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+        all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+
+    dependencies {
+        implementation platform("dev.langchain4j:langchain4j-bom:${langchain4jVersion}")
+        implementation platform("dev.langchain4j:langchain4j-community-bom:${langchain4jVersion}")
+        implementation "org.springframework.boot:spring-boot-starter-actuator"
+        //
+        implementation "dev.langchain4j:langchain4j-spring-boot-starter:${langchain4jVersion}"
+        implementation "dev.langchain4j:langchain4j-reactor"
+        //
+        implementation "dev.langchain4j:langchain4j-community-dashscope"
+        implementation "dev.langchain4j:langchain4j-community-dashscope-spring-boot-starter:${langchain4jVersion}"
+        implementation "dev.langchain4j:langchain4j-open-ai-spring-boot-starter:${langchain4jVersion}"
+        //
+        implementation 'com.openai:openai-java:0.36.0'
+        //
+        compileOnly 'org.projectlombok:lombok:1.18.30'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        annotationProcessor 'org.projectlombok:lombok'
+        //
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'io.projectreactor:reactor-test'
+        implementation "org.apache.pdfbox:pdfbox:${pdfboxVersion}"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
