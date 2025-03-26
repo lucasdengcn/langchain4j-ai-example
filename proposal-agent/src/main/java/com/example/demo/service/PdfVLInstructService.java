@@ -69,14 +69,11 @@ public class PdfVLInstructService {
 
         // Step 2: build PDF anchor text with PDF text elements and image elements
         String anchorText = buildAnchorText(pageReport);
-
         // Step 3: Build query prompt with PromptQueryBuilder
         String promptText = PromptQueryBuilder.buildPlainTextPrompt(anchorText);
         // log.info("Prompt Text: {}\n {}", promptText.length(), promptText);
-
         // Step 4: call LLM
         String response = executeWithVLModel(promptText, pageReport.getPageBase64PNG());
-
         // Step 5: Save response to resource folder
         saveResponseToFile(response);
     }
@@ -139,7 +136,7 @@ public class PdfVLInstructService {
 
     private void saveResponseToFile(String response) throws IOException {
         // 实现保存响应到文件的逻辑
-        String filePath = Paths.get("src/main/resources/output.txt").toString();
+        String filePath = Paths.get("output.txt").toString();
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(response.getBytes());
         }
