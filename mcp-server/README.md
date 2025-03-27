@@ -84,3 +84,7 @@ The Java source code under `src/main/java/com/example/demo` is organized into th
   - `WeatherTool.java`: Implementation of weather-related tools
 
 The main application entry point is `MCPApplication.java`
+
+## Changes
+
+- Upgrade MCP SDK to 0.8.0 for fixing session timeout issue.

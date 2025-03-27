@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.pdf.PDFPageReport;
+import com.example.demo.pdf.PdfStructureService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,12 +19,25 @@ class PdfVLInstructServiceTest {
     @Autowired
     private PdfVLInstructService pdfVLInstructService;
 
+    @Autowired
+    private PdfStructureService pdfStructureService;
+
     @Test
     void test_process_proposal_pdf() throws IOException {
         Resource resource = new ClassPathResource("test-proposal.pdf");
         File testPdfFile = resource.getFile();
         //
         pdfVLInstructService.processPdf(testPdfFile.getAbsolutePath(), 5);
+    }
+
+    @Test
+    void test_anchor_text() throws IOException {
+        Resource resource = new ClassPathResource("test-proposal.pdf");
+        File testPdfFile = resource.getFile();
+        //
+        PDFPageReport pdfReport = pdfStructureService.generatePageReport(testPdfFile, 5);
+        String s = pdfVLInstructService.buildAnchorText(pdfReport);
+        pdfVLInstructService.saveResponseToFile(s);
     }
 
     @Test

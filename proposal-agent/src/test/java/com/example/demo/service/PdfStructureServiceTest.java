@@ -56,7 +56,7 @@ class PdfStructureServiceTest {
 
   @Test
   void test_encodePageToBase64PNG() throws IOException {
-    byte[] base64PNG = pdfStructureService.encodePageToBase64PNG(testPdfFile, 4);
+    byte[] base64PNG = pdfStructureService.encodePageToBase64PNG(testPdfFile, 5);
     assertNotNull(base64PNG);
   }
 

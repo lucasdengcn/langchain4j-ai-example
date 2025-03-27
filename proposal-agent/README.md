@@ -47,3 +47,7 @@ The source code under `src/main/java/com/example/demo` is organized into:
 - `tool/`: MCP Tool implementations
 
 The main application entry point is `DemoApplication.java`
+
+## MCP Client Implementation
+
+- langchain4j implementation is not ready for production, it lacks of reconnect and retry features, connection pools.

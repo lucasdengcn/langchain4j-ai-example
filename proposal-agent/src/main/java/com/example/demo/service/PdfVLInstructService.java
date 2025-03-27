@@ -78,15 +78,15 @@ public class PdfVLInstructService {
         saveResponseToFile(response);
     }
 
-    private String buildAnchorText(PDFPageReport pageReport) {
+    public String buildAnchorText(PDFPageReport pageReport) {
         // 实现构建 PDF 锚文本的逻辑
         List<PdfElement> elements = new ArrayList<>();
         elements.addAll(pageReport.getTextElements());
         elements.addAll(pageReport.getImageElements());
         //
-        elements.sort((e1, e2) -> {
+        elements.sort((e2, e1) -> {
             if (e1.getY() == e2.getY()) {
-                return Float.compare(e1.getX(), e2.getX());
+                return Float.compare(e2.getX(), e1.getX());
             } else {
                 return Float.compare(e2.getY(), e1.getY());
             }
@@ -134,7 +134,7 @@ public class PdfVLInstructService {
         return chatCompletion.choices().getFirst().message().content().get();
     }
 
-    private void saveResponseToFile(String response) throws IOException {
+    public void saveResponseToFile(String response) throws IOException {
         // 实现保存响应到文件的逻辑
         String filePath = Paths.get("output.txt").toString();
         try (FileOutputStream fos = new FileOutputStream(filePath)) {

@@ -1,5 +1,6 @@
 package com.example.demo.sse;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -9,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.function.Function;
 
+@Slf4j
 @Service
 public class SseEmitterService {
 
@@ -19,8 +21,11 @@ public class SseEmitterService {
     private final Function<String, Void> timeoutListener = new Function<>() {
         @Override
         public Void apply(String clientId) {
-            semaphore.release(); // 释放信号量许可
-            emitters.remove(clientId);
+            var result = emitters.remove(clientId);
+            if (null != result) {
+                semaphore.release(); // 释放信号量许可
+            }
+            log.info("Client {} timeout.", clientId);
             return null;
         }
     };
@@ -28,16 +33,22 @@ public class SseEmitterService {
     private final Function<String, Void> completionListener = new Function<>() {
         @Override
         public Void apply(String clientId) {
-            semaphore.release(); // 释放信号量许可
-            emitters.remove(clientId);
+            var result = emitters.remove(clientId);
+            if (null != result) {
+                semaphore.release(); // 释放信号量许可
+            }
+            log.info("Client {} completed.", clientId);
             return null;
         }
     };
     private final Function<String, Void> errorListener = new Function<>() {
         @Override
         public Void apply(String clientId) {
-            semaphore.release(); // 释放信号量许可
-            emitters.remove(clientId);
+            var result = emitters.remove(clientId);
+            if (null != result) {
+                semaphore.release(); // 释放信号量许可
+            }
+            log.info("Client {} failed.", clientId);
             return null;
         }
     };

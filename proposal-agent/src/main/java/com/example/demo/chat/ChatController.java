@@ -1,6 +1,5 @@
 package com.example.demo.chat;
 
-import com.example.demo.assistant.CustomerAssistant;
 import com.example.demo.service.ProposalChatService;
 import com.example.demo.sse.SseEmitterReference;
 import com.example.demo.sse.SseEmitterService;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -76,7 +76,7 @@ public class ChatController {
     // @CrossOrigin(origins = "localhost:3000", allowCredentials = "true", allowedHeaders = "*")
     @PostMapping(path = "/ai/generateStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter generateStream(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
-        SseEmitterReference emitterReference = sseEmitterService.createEmitter("abc", emitter -> {
+        SseEmitterReference emitterReference = sseEmitterService.createEmitter(UUID.randomUUID().toString(),emitter -> {
             proposalChatService.streamChat(message, emitter);
             return true;
         });

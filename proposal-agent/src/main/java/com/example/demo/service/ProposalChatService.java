@@ -15,6 +15,7 @@ import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
+import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.service.tool.DefaultToolExecutor;
 import dev.langchain4j.service.tool.ToolExecutor;
 import lombok.extern.slf4j.Slf4j;
@@ -166,15 +167,46 @@ public class ProposalChatService {
     }
 
     public void streamChat(String message, SseEmitter emitter) {
-        this.customerStreamAssistant.chat(message).doOnNext(text -> {
+        log.info("streamChat Accept: {}, {}", message, emitter);
+        TokenStream tokenStream = this.customerStreamAssistant.chat(message);
+        log.info("tokenStream: {}", tokenStream);
+        tokenStream.onPartialResponse(text -> {
             try {
                 emitter.send(text);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }).doOnComplete(emitter::complete)
-        .doOnError(emitter::completeWithError)
-        .subscribe();
+        }).onRetrieved(content -> {
+            log.info("contents: {}", content);
+        }).onToolExecuted(toolExecutionResult -> {
+            log.info("toolExecutionResult: {}", toolExecutionResult);
+        }).onCompleteResponse(completeResponse -> {
+            log.info("completeResponse: {}", completeResponse);
+            try {
+                emitter.send(completeResponse.aiMessage().text());
+            } catch (IOException e) {
+                emitter.completeWithError(e);
+                throw new RuntimeException(e);
+            }finally {
+                emitter.complete();
+            }
+        }).onError(errorContext -> {
+            log.info("onError(): {}", errorContext.getMessage());
+            emitter.completeWithError(errorContext);
+        }).start();
+        log.info("streamChat Start: {}", message);
+
+//        this.customerStreamAssistant.chat(message)
+//                .log("streamChat-flow")
+//                .doOnNext(text -> {
+//            try {
+//                emitter.send(text);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }).doOnComplete(emitter::complete)
+//        .doOnError(emitter::completeWithError)
+//                .subscribe();
     }
 
     public void streamAnalysis(SseEmitter emitter) {

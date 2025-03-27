@@ -1,10 +1,12 @@
 package com.example.demo.sse;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.function.Function;
 
+@Slf4j
 @Getter
 public class SseEmitterReference {
 
@@ -26,7 +28,7 @@ public class SseEmitterReference {
     }
 
     public void create(){
-        this.emitter = new SseEmitter(30000L); // 缩短超时时间为30秒
+        this.emitter = new SseEmitter(60000L); // 缩短超时时间为60秒
         this.emitter.onTimeout(() -> {
             this.emitter.complete();
             timeoutListener.apply(clientId);
@@ -38,6 +40,7 @@ public class SseEmitterReference {
         });
 
         this.emitter.onError((ex) -> {
+            log.error("Error occurred for clientId: {}", clientId, ex);
             errorListener.apply(clientId);
         });
     }
