@@ -48,7 +48,7 @@ server:
     max-parameters: 1000    # 最大请求参数数量
     max-headers: 200        # 最大header数量
     max-cookies: 200        # 最大cookie数量
-    no-request-timeout: 1000  # 请求超时(ms)
+    no-request-timeout: 600000  # 请求超时(ms)
     accesslog:
       dir: ./build/logs
       prefix: access_log
@@ -81,3 +81,7 @@ spring.mvc:
     allowed-headers: "*"
     allow-credentials: true
     max-age: 3600
+
+spring:
+  main:
+    allow-bean-definition-overriding: true

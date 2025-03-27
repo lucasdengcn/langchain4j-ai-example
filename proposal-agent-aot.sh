@@ -1,14 +1,14 @@
 # unpack-cds-aot
-rm -fr mcp-server-application
+rm -fr proposal-agent-application
 
-gradle mcp-server:clean mcp-server:build -x test
+gradle proposal-agent:clean proposal-agent:build -x test
 
-RUN_JAR=mcp-server-1.0-SNAPSHOT.jar
-BUILD_FILE="./mcp-server/build/libs/${RUN_JAR}"
+RUN_JAR=proposal-agent-1.0-SNAPSHOT.jar
+BUILD_FILE="./proposal-agent/build/libs/${RUN_JAR}"
 
-java -Djarmode=tools -jar $BUILD_FILE extract --destination mcp-server-application
+java -Djarmode=tools -jar $BUILD_FILE extract --destination proposal-agent-application
 
-cd mcp-server-application
+cd proposal-agent-application
 #
 java -XX:ArchiveClassesAtExit=application.jsa -Dspring.context.exit=onRefresh -jar $RUN_JAR
 #

@@ -44,3 +44,6 @@ bin/
 *.pdf
 *.png
 
+mcp-server-application
+proposal-agent-application
+

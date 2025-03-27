@@ -2,6 +2,9 @@ plugins {
     id 'java'
 }
 
+group = 'com.example.demo'
+version = '1.0-SNAPSHOT'
+
 dependencies {
     implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-M6")
     // upgrade to fix session timeout issues
